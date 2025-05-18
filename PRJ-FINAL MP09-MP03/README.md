@@ -105,7 +105,7 @@ El proyecto sigue la arquitectura **Modelo-Vista-Controlador (MVC)**, separando 
 
 ## Diagrama de arquitectura
 
-![Diagrama de arquitectura MVC](ruta/a/tu/diagrama.png)
+![Diagrama de arquitectura MVC](https://github.com/RVDveloper/M9M3Final/blob/main/PRJ-FINAL%20MP09-MP03/76fe85cb-9804-4b91-948b-7f9d3989f97e.JPG)
 
 ---
 
