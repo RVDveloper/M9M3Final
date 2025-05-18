@@ -1,0 +1,439 @@
+@model PRJ_FINAL_MP09_MP03.Models.MusicViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Dashboard Musical";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Musical</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Estilo personalizado -->
+    <link href="~/css/dashboard.css" rel="stylesheet" />
+    <style>
+        .visually-hidden {
+          position: absolute !important;
+          width: 1px; height: 1px;
+          padding: 0; margin: -1px;
+          overflow: hidden; clip: rect(0,0,0,0);
+          border: 0;
+        }
+        .app-window { display: flex; min-height: 100vh; }
+        aside {
+            min-width: 220px;
+            background: rgba(34, 40, 60, 0.7);
+            backdrop-filter: blur(16px);
+            border-right: 1.5px solid rgba(255,255,255,0.13);
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 2rem 1rem 1rem 1rem;
+        }
+        .nav--main ul, .nav--has-icons ul { list-style: none; padding: 0; }
+        .nav--main ul li, .nav--has-icons ul li { margin-bottom: 1.2rem; }
+        .nav--main a, .nav--has-icons a {
+            color: #fff; text-decoration: none; font-weight: 600; font-size: 1.1rem;
+            display: flex; align-items: center; gap: 0.7rem; border-radius: 12px; padding: 0.5rem 1rem;
+            transition: background 0.2s;
+        }
+        .nav--main a:hover, .nav--has-icons a:hover, .nav-item--selected a {
+            background: linear-gradient(90deg, #532ab9 60%, #8a2be2 100%);
+            color: #fff;
+        }
+        .nav--has-icons h3 { color: #8a2be2; font-size: 1rem; margin-bottom: 0.7rem; }
+        main { flex: 1; padding: 2.5rem 2rem; }
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2rem;
+        }
+        .top-bar__search {
+            background: rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 0.5rem 1.2rem;
+            display: flex; align-items: center; gap: 0.7rem;
+            box-shadow: 0 2px 12px 0 rgba(83,42,185,0.08);
+        }
+        .top-bar__search input {
+            background: transparent; border: none; color: #fff; outline: none;
+            font-size: 1rem; width: 180px;
+        }
+        .top-bar__user a {
+            color: #fff; font-size: 1.3rem; margin-left: 1.2rem;
+            transition: color 0.2s;
+        }
+        .top-bar__user a:hover { color: #8a2be2; }
+        .screen-title {
+            color: #fff; font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem;
+            letter-spacing: 1px; text-shadow: 0 2px 12px #532ab9;
+        }
+        .card.h-100 {
+            background: rgba(34, 40, 60, 0.55) !important;
+            backdrop-filter: blur(16px) saturate(1.2);
+            border-radius: 22px !important;
+            border: 1.5px solid rgba(255,255,255,0.13) !important;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+            color: #fff !important;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card.h-100:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 16px 40px 0 rgba(83,42,185,0.18);
+        }
+        .card-title { color: #8a2be2 !important; font-weight: 700; }
+        .btn.btn-primary {
+            background: linear-gradient(90deg, #532ab9, #8a2be2);
+            color: #fff;
+            border-radius: 25px;
+            padding: 0.7rem 1.5rem;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 0 12px #8a2be2;
+            transition: all 0.2s;
+        }
+        .btn.btn-primary:hover {
+            background: #8a2be2;
+            color: #fff;
+            box-shadow: 0 0 18px #532ab9;
+        }
+        .alert {
+            background: rgba(255,255,255,0.08) !important;
+            color: #fff !important;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.13);
+        }
+        .player {
+            background: rgba(34, 40, 60, 0.85);
+            border-top: 1.5px solid rgba(255,255,255,0.13);
+            box-shadow: 0 -4px 24px 0 rgba(83,42,185,0.12);
+        }
+        @@media (max-width: 900px) {
+            .app-window { flex-direction: column; }
+            aside { min-width: 100%; border-right: none; border-bottom: 1.5px solid rgba(255,255,255,0.13); flex-direction: row; }
+            main { padding: 1.2rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo y gradientes -->
+    <div class="gradient-bg">
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+                    <feBlend in="SourceGraphic" in2="goo" />
+                </filter>
+            </defs>
+        </svg>
+        <div class="gradients-container">
+            <div class="g1"></div>
+            <div class="g2"></div>
+            <div class="g3"></div>
+            <div class="g4"></div>
+            <div class="g5"></div>
+            <div class="interactive"></div>
+        </div>
+    </div>
+    <div class="app-window">
+        <!-- Sidebar -->
+        <aside aria-label="Barra lateral de navegación">
+            <nav class="nav nav--main" aria-label="Menú principal">
+                <ul>
+                    <li class="nav-item--selected">
+                        <a asp-controller="Music" asp-action="Dashboard">
+                            <i class="fas fa-headphones" aria-hidden="true"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Music" asp-action="Trending">
+                            <i class="fas fa-fire" aria-hidden="true"></i> Trending
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Music" asp-action="TopTracksArtista">
+                            <i class="fas fa-star" aria-hidden="true"></i> Top Tracks Artistas
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <nav class="nav nav--has-icons" aria-label="Biblioteca">
+                <h3>Library</h3>
+                <ul>
+                    <li>
+                        <a asp-controller="Music" asp-action="Playlist">
+                            <i class="fas fa-list" aria-hidden="true"></i> Playlists
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Music" asp-action="Lyrics">
+                            <i class="fas fa-music" aria-hidden="true"></i> Lyrics
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-logout mt-auto">
+              <a href="#" class="logout-link" aria-label="Cerrar sesión">
+                <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                <span class="visually-hidden">Cerrar sesión</span>
+              </a>
+            </div>
+        </aside>
+        <!-- Main -->
+        <main role="main">
+            <div class="top-bar">
+                <div class="top-bar__search">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <form method="get" asp-controller="Music" asp-action="BuscarTrackId">
+                        <label for="nombreCancion" class="visually-hidden">Buscar canción</label>
+                        <input type="text" id="nombreCancion" name="nombreCancion" placeholder="Buscar canción..." required />
+                    </form>
+                </div>
+                <div class="top-bar__user">
+                    <a asp-controller="Account" asp-action="Profile" aria-label="Perfil">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="logout-link text-danger" aria-label="Cerrar sesión">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                        <span class="visually-hidden">Cerrar sesión</span>
+                    </a>
+                </div>
+            </div>
+            <h1 class="screen-title">Recomendaciones Musicales</h1>
+            <div id="downloadResult"></div>
+            @if (TempData["TrackId"] != null)
+            {
+                <div class="alert alert-success text-center mt-4">
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            if ('@TempData["TrackId"]' !== '') {
+                                getTrackUrlFromApi('@TempData["TrackId"]');
+                            }
+                        });
+                    </script>
+                </div>
+            }
+            else if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger text-center mt-4">
+                    <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+                </div>
+            }
+            @if (Model.Recommendations != null && Model.Recommendations.Any())
+            {
+                <div class="container mt-4">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        @foreach (var rec in Model.Recommendations)
+                        {
+                            var song = rec.recommended_song;
+                            <div class="col">
+                                <div class="card h-100 shadow-sm">
+                                    <img src="@song.song_art_image_url" class="card-img-top" alt="Imagen de @song.title">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@song.title</h5>
+                                        <p class="card-text"><strong>Artista:</strong> @song.artist_names</p>
+                                        <a asp-controller="Music" asp-action="SongDetails" asp-route-id="@song.id" class="btn btn-primary mt-2">
+                                            <i class="fas fa-info-circle"></i> Ver Detalles
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center mt-5">
+                    <i class="fas fa-exclamation-triangle"></i> No se encontraron recomendaciones musicales.
+                </div>
+            }
+        </main>
+        <!-- Player -->
+        <div class="player" style="display: none;">
+            <i class="fas fa-expand player__dock player__max"></i>
+            <i class="fas fa-compress player__dock player__min"></i>
+            <div class="player__left">
+                <img src="" alt="Album Cover" class="player__pic" id="playerAlbumCover" />
+                <div class="now-playing">
+                    <span class="now-playing--title" id="playerTitle"></span>
+                    <span class="now-playing--artist" id="playerArtist"></span>
+                </div>
+            </div>
+            <div class="player__centre">
+                <div class="player-actions">
+                    <i class="fas fa-step-backward" id="prevTrack"></i>
+                    <i class="fas fa-play" id="playPauseBtn"></i>
+                    <i class="fas fa-step-forward" id="nextTrack"></i>
+                </div>
+                <div class="player-progress">
+                    <span id="currentTime">0:00</span>
+                    <div class="player-progress-bar">
+                        <div class="player-progress-bar-done" id="progressBar"></div>
+                    </div>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+            <div class="player__right">
+                <i class="fas fa-volume-up" id="volumeIcon"></i>
+                <div class="player-progress-bar">
+                    <div class="player-progress-bar-done" id="volumeBar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Toast notification -->
+    <div id="toastApple" class="toast-apple" style="display:none;">
+        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span class="toast-msg"></span>
+    </div>
+    <div id="appleToast" class="apple-toast"></div>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.logout-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Seguro que quieres cerrar sesión?',
+                        text: "Se cerrará tu sesión en la aplicación.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Sí, cerrar sesión',
+                        background: '#1a1a1a',
+                        color: '#f1f1f1',
+                        customClass: {
+                            popup: 'rounded-4 shadow-lg',
+                            confirmButton: 'btn btn-danger',
+                            cancelButton: 'btn btn-secondary me-3'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/Account/Logout';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    <script>
+        // --- DASHBOARD PLAYER Y FUNCIONALIDAD ---
+        let tracks = [];
+        try { tracks = JSON.parse(localStorage.getItem('dashboardTracks')) || []; } catch (e) { tracks = []; }
+        let currentTrackIndex = tracks.length > 0 ? tracks.length - 1 : 0;
+        let isPlaying = false;
+        let currentAudio = null;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function updatePlayer(track) {
+            const player = document.querySelector('.player');
+            player.style.display = 'flex';
+            const albumCover = document.getElementById('playerAlbumCover');
+            albumCover.src = track.imageUrl;
+            document.getElementById('playerTitle').textContent = track.title;
+            document.getElementById('playerArtist').textContent = track.artists;
+
+            if (currentAudio) currentAudio.pause();
+            currentAudio = new Audio(track.mp3Url);
+            currentAudio.addEventListener('timeupdate', updateProgress);
+            currentAudio.addEventListener('loadedmetadata', () => {
+                document.getElementById('duration').textContent = formatTime(currentAudio.duration);
+            });
+            setupPlayerEvents();
+        }
+
+        function updateProgress() {
+            const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('currentTime').textContent = formatTime(currentAudio.currentTime);
+        }
+
+        function setupPlayerEvents() {
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const prevTrack = document.getElementById('prevTrack');
+            const nextTrack = document.getElementById('nextTrack');
+            const volumeIcon = document.getElementById('volumeIcon');
+            const volumeBar = document.getElementById('volumeBar');
+            const progressBar = document.getElementById('progressBar');
+            const albumCover = document.getElementById('playerAlbumCover');
+
+            playPauseBtn.onclick = () => {
+                if (currentAudio.paused) {
+                    currentAudio.play();
+                    playPauseBtn.classList.replace('fa-play', 'fa-pause');
+                    isPlaying = true;
+                    albumCover.classList.add('rotating');
+                } else {
+                    currentAudio.pause();
+                    playPauseBtn.classList.replace('fa-pause', 'fa-play');
+                    isPlaying = false;
+                    albumCover.classList.remove('rotating');
+                }
+            };
+            prevTrack.onclick = () => {
+                if (tracks.length > 0) {
+                    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                    updatePlayer(tracks[currentTrackIndex]);
+                    if (isPlaying) currentAudio.play();
+                }
+            };
+            nextTrack.onclick = () => {
+                if (tracks.length > 0) {
+                    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                    updatePlayer(tracks[currentTrackIndex]);
+                    if (isPlaying) currentAudio.play();
+                }
+            };
+            volumeIcon.onclick = () => {
+                if (currentAudio.muted) {
+                    currentAudio.muted = false;
+                    volumeIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
+                } else {
+                    currentAudio.muted = true;
+                    volumeIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
+                }
+            };
+            progressBar.parentElement.onclick = (e) => {
+                const rect = progressBar.parentElement.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                currentAudio.currentTime = pos * currentAudio.duration;
+            };
+            volumeBar.parentElement.onclick = (e) => {
+                const rect = volumeBar.parentElement.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                currentAudio.volume = pos;
+                volumeBar.style.width = `${pos * 100}%`;
+            };
+        }
+
+        function showAppleToast(msg, isError = false) {
+            const toast = document.getElementById('appleToast');
+            toast.innerHTML = `
+                <span class="toast-icon">
+                    <i class="fas ${isError ? 'fa-times-circle' : 'fa-check-circle'}"></i>
+                </span>
+                <span class="toast-msg">${msg}</span>
+            `;
+            toast.classList.toggle('toast-error', isError);
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 1500);
+        }
+
+        window.addEventListener('beforeunload', () => {
+            localStorage.removeItem('dashboardTracks');
+        });
+    </script>
+</body>
+</html>
