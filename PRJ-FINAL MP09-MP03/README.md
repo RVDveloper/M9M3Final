@@ -1,5 +1,9 @@
 # Proyecto Final DAW: App Musical Version 2.0
 
+> **⚠️ NOTA IMPORTANTE:**
+> **Marc, si el funcionamiento de la API no devuelve los datos al hacer la búsqueda o petición, es debido a que la API ha colapsado su servidor.**
+> **Esto es un problema persistente en las APIs que estamos usando de Spotify y servicios relacionados.**
+
 **Autores:** Rafael Valerio y Anass El Morabit  
 **Módulos:** M9 y M3  
 **Curso:** Segundo de DAW  
@@ -105,7 +109,7 @@ El proyecto sigue la arquitectura **Modelo-Vista-Controlador (MVC)**, separando 
 
 ## Diagrama de arquitectura
 
-![Diagrama de arquitectura MVC](https://github.com/RVDveloper/M9M3Final/blob/main/PRJ-FINAL%20MP09-MP03/76fe85cb-9804-4b91-948b-7f9d3989f97e.JPG)
+![Diagrama de arquitectura MVC](ruta/a/tu/diagrama.png)
 
 ---
 
@@ -234,6 +238,40 @@ document.querySelectorAll('.logout-link').forEach(link => {
   });
 });
 ```
+
+### Búsqueda dinámica y renderizado de la card (AJAX + API)
+
+```javascript
+<code_block_to_apply_changes_from>
+async function getTrackUrlFromApi(trackId) {
+    // ... (peticiones a las APIs)
+    // Mostrar card con los datos
+    document.getElementById("downloadResult").innerHTML = `
+        <div class="music-card">
+            <h2>${title} - ${artists}</h2>
+            <img src="${imageUrl}" alt="Portada del álbum">
+            <div class="player">
+                <audio id="audio-${trackId}" src="${mp3Url}" preload="auto"></audio>
+                <div class="controls">
+                    <button onclick="document.getElementById('audio-${trackId}').play()"><i class="bi bi-play-fill"></i></button>
+                    <button onclick="document.getElementById('audio-${trackId}').pause()"><i class="bi bi-pause-fill"></i></button>
+                    <!-- ...otros controles... -->
+                </div>
+                <input type="range" id="progress-${trackId}" min="0" step="0.1" value="0">
+            </div>
+            <div class="card-details mt-3">
+                <p><strong>Álbum:</strong> ${albumName}</p>
+                <p><strong>Fecha de lanzamiento:</strong> ${releaseDate}</p>
+                <p><strong>Popularidad:</strong> ${popularity}</p>
+                <a href="${mp3UrlMp3}" download class="start-button">⬇️ Descargar MP3</a>
+            </div>
+        </div>`;
+    // ... (gestión de eventos del reproductor)
+}
+```
+
+**Explicación:**  
+Cuando el usuario busca una canción, se realiza una petición a varias APIs externas para obtener todos los datos y el MP3. El resultado se muestra dinámicamente en el dashboard, sin recargar la página, y se genera una card con toda la información y controles de reproducción.
 
 ---
 
