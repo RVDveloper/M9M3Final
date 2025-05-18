@@ -10,6 +10,12 @@
 
 ---
 
+***Prueba Wave**
+> **Marc, la prueba del wave no me muestra los estilos aplicados y no deja avanzar del inicio de sesion esto solo sucede en el validator del wave.**
+>
+> ![prueba wave](https://github.com/RVDveloper/M9M3Final/blob/main/PRJ-FINAL%20MP09-MP03/SCR-20250518-mjoy.png)
+
+
 ## Justificación y motivación del proyecto
 
 Este proyecto nace de la pasión por la música y la tecnología, con el objetivo de crear una plataforma web moderna donde los usuarios puedan descubrir, buscar y gestionar música de manera intuitiva y visualmente atractiva. La motivación principal es aplicar los conocimientos adquiridos en los módulos de DAW, especialmente en el desarrollo de aplicaciones web con arquitectura MVC, y ofrecer una experiencia de usuario innovadora, accesible y adaptada a los estándares actuales.
